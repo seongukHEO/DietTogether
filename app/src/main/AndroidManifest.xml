@@ -13,6 +13,24 @@
         android:theme="@style/Theme.My_Project_DietTogether"
         tools:targetApi="31">
         <activity
+            android:name=".ModifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InviteInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchPWActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchIdActivity"
+            android:exported="false" />
+        <activity
+            android:name=".inviteInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".InviteActivity"
             android:exported="false" />
         <activity

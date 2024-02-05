@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PrintInfoActivity">
+    tools:context=".SearchPWActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar3"
+        android:id="@+id/materialToolbar8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#8A6060"
@@ -24,11 +24,11 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:hint="이름">
+            android:hint="아이디"
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nonameText"
+                android:id="@+id/searchPWidText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -37,39 +37,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:enabled="false"
-            android:hint="휴대폰 번호">
+            android:hint="휴대폰 번호 "
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/noNumberText"
+                android:id="@+id/searchPWnumberText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <Button
+            android:id="@+id/searchPWbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:enabled="false"
-            android:hint="아이디">
+            android:layout_marginTop="25dp"
+            android:text="비밀번호 찾기" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/noIdText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
+            android:id="@+id/searchPWText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:enabled="false"
-            android:hint="비밀번호">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/noPwText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
     </LinearLayout>
 </LinearLayout>
