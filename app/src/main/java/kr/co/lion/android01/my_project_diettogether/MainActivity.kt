@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                         it?.data!!.getParcelableExtra<MainMemberClass>("obj1")
                     }
                     memberList.add(info1!!)
-                    activityMainBinding.recyclerview.adapter?.notifyDataSetChanged()
+                    activityMainBinding.recyclerView.adapter?.notifyDataSetChanged()
                 }
             }
 
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                         it?.data!!.getParcelableExtra<MainMemberClass>("obj1")
                     }
                     memberList.add(info3!!)
-                    activityMainBinding.recyclerview.adapter?.notifyDataSetChanged()
+                    activityMainBinding.recyclerView.adapter?.notifyDataSetChanged()
                 }
             }
 
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     fun initView(){
         activityMainBinding.apply {
-            recyclerview.apply {
+            recyclerView.apply {
                 //어댑터 객체 생성
                 adapter = ThisReCycler()
                 //레이아웃 설정
@@ -133,20 +133,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showDiaLog(title: String, message: String){
-        //DiaLog를 보여준다
-        var builder = MaterialAlertDialogBuilder(this).apply {
-            setTitle(title)
-            setMessage(message)
-            setPositiveButton("확인"){dialogInterface : DialogInterface, i: Int ->
-
-            }
-        }
-
-    }
-
-
-
     //어댑터 클래스 생성
     inner class ThisReCycler: RecyclerView.Adapter<ThisReCycler.ThisViewHolder>(){
 
@@ -168,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                     newIntent3.putExtra("obj2", memberList[adapterPosition])
                     printActivitylauncher.apply {
                         memberList.removeAt(adapterPosition)
-                        activityMainBinding.recyclerview.adapter?.notifyDataSetChanged()
+                        activityMainBinding.recyclerView.adapter?.notifyDataSetChanged()
                         launch(newIntent3)
                     }
                     modifyActivitylauncher.launch(newIntent3)

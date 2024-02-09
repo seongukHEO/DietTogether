@@ -9,5 +9,7 @@
         android:id="@+id/carousel_ImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
         app:srcCompat="@mipmap/ic_launcher" />
+
 </com.google.android.material.carousel.MaskableFrameLayout>
