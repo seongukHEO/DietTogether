@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     //PrintActivity에서 사용할 런쳐
     lateinit var printActivitylauncher:ActivityResultLauncher<Intent>
 
+    //modifyActivity에서 사용할 런쳐
+    lateinit var modifyActivitylauncher:ActivityResultLauncher<Intent>
+
     //정보를 담아둘 리스트
     var memberList = mutableListOf<MainMemberClass>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,16 @@ class MainActivity : AppCompatActivity() {
     fun initData(){
         var contract = ActivityResultContracts.StartActivityForResult()
         printActivitylauncher = registerForActivityResult(contract){
+            if (it.resultCode == RESULT_OK){
+                if(it.data != null){
+                    var info2 = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                        it?.data!!.getParcelableExtra("obj2", MainMemberClass::class.java)
+                    }else{
+                        it?.data!!.getParcelableExtra<MainMemberClass>("obj2")
+                    }
+
+                }
+            }
 
         }
 
@@ -57,6 +70,21 @@ class MainActivity : AppCompatActivity() {
                         it?.data!!.getParcelableExtra<MainMemberClass>("obj1")
                     }
                     memberList.add(info1!!)
+                    activityMainBinding.recyclerview.adapter?.notifyDataSetChanged()
+                }
+            }
+
+        }
+        var contract3 = ActivityResultContracts.StartActivityForResult()
+        modifyActivitylauncher = registerForActivityResult(contract3){
+            if (it.resultCode == RESULT_OK){
+                if (it.data != null){
+                    var info3 = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                        it?.data!!.getParcelableExtra("obj1", MainMemberClass::class.java)
+                    }else{
+                        it?.data!!.getParcelableExtra<MainMemberClass>("obj1")
+                    }
+                    memberList.add(info3!!)
                     activityMainBinding.recyclerview.adapter?.notifyDataSetChanged()
                 }
             }
@@ -138,7 +166,13 @@ class MainActivity : AppCompatActivity() {
                 this.mainBinding.root.setOnClickListener {
                     var newIntent3 = Intent(this@MainActivity, PrintInfoActivity::class.java)
                     newIntent3.putExtra("obj2", memberList[adapterPosition])
-                    printActivitylauncher.launch(newIntent3)
+                    printActivitylauncher.apply {
+                        memberList.removeAt(adapterPosition)
+                        activityMainBinding.recyclerview.adapter?.notifyDataSetChanged()
+                        launch(newIntent3)
+                    }
+                    modifyActivitylauncher.launch(newIntent3)
+
                 }
             }
         }
