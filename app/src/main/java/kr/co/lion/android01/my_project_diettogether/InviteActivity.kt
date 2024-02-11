@@ -1,5 +1,6 @@
 package kr.co.lion.android01.my_project_diettogether
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,11 +17,26 @@ class InviteActivity : AppCompatActivity() {
         setContentView(activityInviteBinding.root)
 
         setToolBar()
-        setEvent()
         setView()
     }
 
-    //툴바 설정
+
+    //뷰 설정
+    fun setView(){
+        activityInviteBinding.apply {
+            //전부다 안보이게 한다
+            weightText.isVisible = false
+
+
+            //라디오 버튼 10번째 것을 눌렀을 떄 보이게 한다
+           radioButton10.setOnCheckedChangeListener { buttonView, isChecked -> 
+               when(radioButton10.isChecked){
+                   true -> {weightText.isVisible = true}
+                   false -> {weightText.isVisible = false}
+               }
+           }
+        }
+    }
     fun setToolBar(){
         activityInviteBinding.apply {
             materialToolbar4.apply {
@@ -32,51 +48,13 @@ class InviteActivity : AppCompatActivity() {
                 setNavigationOnClickListener {
                     finish()
                 }
-            }
-        }
-    }
+                activityInviteBinding.apply {
+                    inviteProgramButton.setOnClickListener {
+                        checkOK()
 
-    //뷰 설정
-    fun setView(){
-        activityInviteBinding.apply {
-            //전부다 안보이게 한다
-            weightText.isVisible = false
-            checkBox.isVisible = false
-            checkBox2.isVisible = false
-            checkBox3.isVisible = false
-            checkBox4.isVisible = false
-            favoriteText.isVisible = false
-
-            //라디오 버튼 10번째 것을 눌렀을 떄 보이게 한다
-           radioButton10.setOnCheckedChangeListener { buttonView, isChecked -> 
-               when(radioButton10.isChecked){
-                   true -> {weightText.isVisible = true}
-                   false -> {weightText.isVisible = false}
-               }
-           }
-            //스위치를 on했을 때 보이게 한다
-            favoriteSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-                when(favoriteSwitch.isChecked){
-                    true -> {
-                        checkBox.isVisible = true
-                        checkBox2.isVisible = true
-                        checkBox3.isVisible = true
-                        checkBox4.isVisible = true
-
-                        checkBox4.setOnCheckedChangeListener { buttonView, isChecked ->
-                            when (checkBox4.isChecked){
-                                true -> {favoriteText.isVisible = true}
-                                false -> {favoriteText.isVisible = false}
-                            }
-                        }
                     }
-                    false -> {
-                        FavoriteExercise.NEVER
-                        checkBox.isVisible = false
-                        checkBox2.isVisible = false
-                        checkBox3.isVisible = false
-                        checkBox4.isVisible = false
-                    }
+                    //와 해냈다 그러니까 checkOK안에 버튼을 클릭했을 때 어디로 넘어가야하는 지를 알려놓고
+                    //다른 함수에서 그걸 호출한다
                 }
             }
         }
@@ -86,21 +64,23 @@ class InviteActivity : AppCompatActivity() {
     fun setEvent(){
         activityInviteBinding.apply {
             //성별
-            var str1 = when(toggleGroup2.checkedButtonId){
-                R.id.mantoggleButton -> {
-                    Mygender.MAN_GENDER
-                }
-                R.id.girlToggleButton -> {
-                    Mygender.GIRL_GENDER
-                }
+            var str1 = InviteClass()
+            str1.gender = when(toggleGroup2.checkedButtonId){
+                R.id.mantoggleButton -> Mygender.MAN_GENDER
+                R.id.girlToggleButton -> Mygender.GIRL_GENDER
                 else -> Mygender.MAN_GENDER
             }
+
             //키
-            var str2 = heightText.text.toString().toInt()
+            str1.height = heightText.text.toString().toInt()
+
+
             //나이
-            var str3 = ageText.text.toString().toInt()
+            str1.age = ageText.text.toString().toInt()
+
+
             //몸무게
-            var t1 = when(radioGroup.checkedRadioButtonId){
+            str1.weight = when(radioGroup.checkedRadioButtonId){
                 R.id.radioButton -> Myweight.FOURDOWN
                 R.id.radioButton2 -> Myweight.FOURFIVE
                 R.id.radioButton3 -> Myweight.FIVESIX
@@ -110,36 +90,16 @@ class InviteActivity : AppCompatActivity() {
                 R.id.radioButton7 -> Myweight.NINEHUND
                 R.id.radioButton8 -> Myweight.HUNDONEHUND
                 R.id.radioButton9 -> Myweight.ONEHUNDOVER
-                else -> R.id.radioButton10
+                R.id.radioButton10 -> Myweight.NEVER
+                else -> Myweight.NEVER
             }
-            var str4 = t1 as Myweight
 
-           var t4 = activityInviteBinding.apply {
-               checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-                   if (checkBox.isChecked) {
-                       FavoriteExercise.ILONEXERCISE
-                   }
-               }
-               checkBox2.setOnCheckedChangeListener { buttonView, isChecked ->
-                   if (checkBox2.isChecked){
-                       FavoriteExercise.FILLATES
-                   }
-               }
-               checkBox3.setOnCheckedChangeListener { buttonView, isChecked ->
-                   if (checkBox3.isChecked){
-                       FavoriteExercise.BALLEXERCISE
-                   }
-               }
-           }
-            var str5 = t4 as FavoriteExercise
+            str1.favoriteExercise = favoriteText.text.toString()
 
-            var str10 = InviteClass(str1, str2, str3, str4, str5)
-            inviteProgramButton.setOnClickListener {
-                var newIntent = Intent(this@InviteActivity, InviteInfoActivity::class.java)
-                newIntent.putExtra("obj1", str10)
-                setResult(RESULT_OK, newIntent)
-                startActivity(newIntent)
-            }
+            Util.inviteList.add(str1)
+
+
+
 
         }
 
@@ -147,6 +107,40 @@ class InviteActivity : AppCompatActivity() {
 
     //유효성 검사
     fun checkOK(){
+        activityInviteBinding.apply {
+            //키를 입력하지 않았을 경우
+            var emptyheight = heightText.text.toString()
+            if (emptyheight.trim().isEmpty()){
+                enum.showDiaLog(this@InviteActivity, "키 입력 오류", "키를 입력해주세요"){ dialogInterface: DialogInterface, i: Int ->
+                    enum.showSoftInput(heightText, this@InviteActivity)
+                }
+                return
+            }
+            //나이를 입력하지 않았을 경우
+            var emptyAge = ageText.text.toString()
+            if (emptyAge.trim().isEmpty()){
+                enum.showDiaLog(this@InviteActivity, "나이 입력 오류", "나이를 입력해주세요"){ dialogInterface: DialogInterface, i: Int ->
+                    enum.showSoftInput(ageText, this@InviteActivity)
+                }
+                return
+            }
+            //좋아하는 운동을 입력하지 않았을 경우
+            var emptyExercise = favoriteText.text.toString()
+            if (emptyExercise.trim().isEmpty()){
+                favoriteText.setText("좋아하는 운동이 없음")
+            }
+
+        }
+        setEvent()
+        activityInviteBinding.apply {
+            inviteProgramButton.setOnClickListener {
+                var newIntent = Intent(this@InviteActivity, InviteInfoActivity::class.java)
+                startActivity(newIntent)
+
+            }
+            //와 해냈다 그러니까 checkOK안에 버튼을 클릭했을 때 어디로 넘어가야하는 지를 알려놓고
+            //다른 함수에서 그걸 호출한다
+        }
 
     }
 }

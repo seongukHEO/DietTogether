@@ -1,6 +1,11 @@
 package kr.co.lion.android01.my_project_diettogether
 
 class Util {
+    companion object{
+        //담아둘 리스트
+        var inviteList = mutableListOf<InviteClass>()
+
+    }
 }
 enum class Mygender(var num:Int, var str:String){
     MAN_GENDER(0, "남자"),
@@ -16,11 +21,6 @@ enum class Myweight(var num:Int, var str:String){
     NINEHUND(0, "90 ~ 100kg"),
     HUNDONEHUND(0, "100 ~ 110kg"),
     ONEHUNDOVER(0, "110kg이상"),
+    NEVER(0, "직접 입력합니다!")
 }
 
-enum class FavoriteExercise(var num:Int, var str:String){
-    ILONEXERCISE(0, "헬스"),
-    FILLATES(0, "필라테스"),
-    BALLEXERCISE(0, "구기종목"),
-    NEVER(0, "좋아하는 운동 없음")
-}

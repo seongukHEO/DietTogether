@@ -29,7 +29,8 @@
                 android:id="@+id/toggleGroup2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:selectionRequired="false"
+                app:checkedButton="@id/mantoggleButton"
+                app:selectionRequired="true"
                 app:singleSelection="true">
 
                 <Button
@@ -158,39 +159,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/favoriteSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:checked="false"
-                android:text="좋아하는 운동" />
-
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="헬스" />
-
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="필라테스" />
-
-            <CheckBox
-                android:id="@+id/checkBox3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="구기 종목" />
-
-            <CheckBox
-                android:id="@+id/checkBox4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="기타" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
