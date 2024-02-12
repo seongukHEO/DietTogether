@@ -26,6 +26,7 @@ class InviteInfoActivity : AppCompatActivity() {
         activityInviteInfoBinding = ActivityInviteInfoBinding.inflate(layoutInflater)
         setContentView(activityInviteInfoBinding.root)
 
+        initData()
         setToolBar()
         initView()
 
@@ -34,9 +35,26 @@ class InviteInfoActivity : AppCompatActivity() {
     fun initData(){
         var contract = ActivityResultContracts.StartActivityForResult()
         inviteActivitylauncher = registerForActivityResult(contract){
+            if (it.resultCode == RESULT_OK){
+                if (it.data != null){
+                    var str1 = it?.data!!.getIntExtra("obj2",0)
+
+                    Util.inviteList.removeAt(str1)
+                    activityInviteInfoBinding.recyclerview3.adapter?.notifyDataSetChanged()
+                }
+            }
 
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        activityInviteInfoBinding.apply {
+            ReCyclerViewAdapter()
+            recyclerview3.adapter?.notifyDataSetChanged()
+        }
+    }
+
 
     fun setToolBar(){
         activityInviteInfoBinding.apply {
@@ -90,7 +108,8 @@ class InviteInfoActivity : AppCompatActivity() {
                 this.myMemberBinding.root.setOnClickListener {
                     var newIntent = Intent(this@InviteInfoActivity, ShowActivity::class.java)
                     newIntent.putExtra("obj1" ,adapterPosition)
-                    startActivity(newIntent)
+                    inviteActivitylauncher.launch(newIntent)
+
                 }
             }
 
@@ -118,7 +137,7 @@ class InviteInfoActivity : AppCompatActivity() {
                     holder.myMemberBinding.inviteGenderText.text = "여자"
                 }
             }
-            holder.myMemberBinding.inviteAgeText.text = invite.age.toString()
+            holder.myMemberBinding.inviteAgeText.text = "${invite.age}살"
         }
     }
 

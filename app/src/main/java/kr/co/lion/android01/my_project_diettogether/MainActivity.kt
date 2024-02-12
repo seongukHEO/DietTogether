@@ -10,7 +10,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kr.co.lion.android01.my_project_diettogether.databinding.ActivityMainBinding
 import kr.co.lion.android01.my_project_diettogether.databinding.MainBinding
@@ -120,10 +119,6 @@ class MainActivity : AppCompatActivity() {
 
     fun setButton(){
         activityMainBinding.apply {
-            loginMainButton.setOnClickListener {
-                var newIntent = Intent(this@MainActivity, carouselActivity::class.java)
-                startActivity(newIntent)
-            }
             newMemberButton2.setOnClickListener {
                 var newIntent2 = Intent(this@MainActivity, NewMemberActivity::class.java)
                 newMemberActivitylauncher.launch(newIntent2)
@@ -160,6 +155,48 @@ class MainActivity : AppCompatActivity() {
                     modifyActivitylauncher.launch(newIntent3)
 
                 }
+                activityMainBinding.apply {
+
+                    toggleGroup1.addOnButtonCheckedListener { group, checkedId, isChecked ->
+                        if (isChecked){
+                            when(toggleGroup1.checkedButtonId){
+                                R.id.searchIdMainText -> {
+                                    var newIntent = Intent(this@MainActivity, SearchIdActivity::class.java)
+                                    newIntent.putExtra("obj1", mainBinding.recycleId.text)
+                                    newIntent.putExtra("obj2", mainBinding.recycleNumber.text)
+                                    startActivity(newIntent)
+                                }
+                                R.id.searchPwMainText -> {
+                                    var newIntent2 = Intent(this@MainActivity, SearchPWActivity::class.java)
+                                    newIntent2.putExtra("obj3", mainBinding.recycleId.text)
+                                    newIntent2.putExtra("obj4", mainBinding.recyclePW.text)
+                                    newIntent2.putExtra("obj5", mainBinding.recycleNumber.text)
+                                    startActivity(newIntent2)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                activityMainBinding.apply {
+                    //와 성공했다ㅠㅠㅠㅠㅠ
+                    loginMainButton.setOnClickListener {
+                        var str1 = IdMainTextField.text.toString()
+                        var str2 = pwMainTextField.text.toString()
+                        if (str1 != mainBinding.recycleId.text ){
+                            enum.showDiaLog(this@MainActivity, "아이디 입력 오류", "아이디를 확인해주세요"){ dialogInterface: DialogInterface, i: Int ->
+                                enum.showSoftInput(IdMainTextField, this@MainActivity)
+                            }
+                        }else if (str2 != mainBinding.recyclePW.text){
+                            enum.showDiaLog(this@MainActivity, "비밀번호 입력 오류", "비밀번호를 확인해주세요"){ dialogInterface: DialogInterface, i: Int ->
+                                enum.showSoftInput(pwMainTextField, this@MainActivity)
+                            }
+                        }else{
+                            var newIntent = Intent(this@MainActivity, carouselActivity::class.java)
+                            startActivity(newIntent)
+                        }
+                    }
+                }
             }
         }
 
@@ -177,7 +214,8 @@ class MainActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ThisViewHolder, position: Int) {
             holder.mainBinding.recycleId.text = memberList[position].memberId
-            holder.mainBinding.recycleName.text = memberList[position].name
+            holder.mainBinding.recyclePW.text = memberList[position].memberPw
+            holder.mainBinding.recycleNumber.text = memberList[position].number.toString()
         }
     }
 }

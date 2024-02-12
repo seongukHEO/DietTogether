@@ -1,10 +1,9 @@
 package kr.co.lion.android01.my_project_diettogether
 
 import android.content.DialogInterface
-import android.os.Build
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kr.co.lion.android01.my_project_diettogether.databinding.ActivityShowBinding
 
@@ -39,11 +38,18 @@ class ShowActivity : AppCompatActivity() {
                     var diaLog = MaterialAlertDialogBuilder(this@ShowActivity).apply {
                         setTitle("회원 정보 삭제")
                         setMessage("회원 정보를 삭제하시겠습니까?")
-                        setPositiveButton("확인",setOnClickListener {
-                            Util.inviteList.removeAt(info1)
+                        setPositiveButton("확인"){ dialogInterface: DialogInterface, i: Int ->
+                            var newIntent = Intent()
+                            newIntent.putExtra("obj2", info1)
+                            setResult(RESULT_OK, newIntent)
                             finish()
-                        })
+                        }
+                        setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
+                            dialogInterface.dismiss()
+                        }
                     }
+                    diaLog.show()
+
 
                     true
                 }
